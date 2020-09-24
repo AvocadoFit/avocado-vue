@@ -1,12 +1,23 @@
 <template>
    <div class="container" :style="dimension" :class="{ active: active }">
       <input :placeholder="placeholder" :class="{ active: active }" />
+      <div class="icon">
+         <BaseIcon width="24" height="24" viewBox="0 0 24 24" v-if="isEvaluated">
+            <InputCorrect v-if="state" />
+            <InputError v-else />
+         </BaseIcon>
+      </div>
    </div>
 </template>
 
 <script>
+import BaseIcon from '@/components/base/BaseIcon.vue'
+import InputError from '@/assets/icons/InputError.vue'
+import InputCorrect from '@/assets/icons/InputCorrect.vue'
+
 export default {
    name: 'BaseInput',
+   components: { BaseIcon, InputError, InputCorrect },
    props: {
       width: {
          type: String,
@@ -17,6 +28,10 @@ export default {
       active: {
          type: Boolean,
          default: false
+      },
+      state: {
+         type: Boolean,
+         default: null
       }
    },
    data() {
@@ -26,6 +41,11 @@ export default {
             height: this.height + '%'
          }
       }
+   },
+   computed: {
+      isEvaluated() {
+         return this.state != null
+      }
    }
 }
 </script>
@@ -33,7 +53,8 @@ export default {
 <style lang="sass" scoped>
 .container
    border: none
-   border-radius: 16px;
+   border-radius: 16px
+   position: relative
 input
    width: 100%
    height: 100%
@@ -55,4 +76,13 @@ input[class="active"]
    color: #FE6558
    &::placeholder
       color: #FE655890
+.icon
+   position: absolute
+   top: 0
+   right: 0
+   height: 100%
+   width: 25%
+   display: flex
+   justify-content: center
+   align-items: center
 </style>
