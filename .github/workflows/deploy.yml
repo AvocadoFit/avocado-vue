@@ -1,0 +1,21 @@
+name: Avocado CI deploy
+
+on:
+    push:
+        branches: [develop]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 12
+            - run: npm run test:unit
+    
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - run: curl -X POST -d {} https://api.netlify.com/build_hooks/5f6b566195864c6f5d0293c8
