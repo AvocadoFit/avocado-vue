@@ -37,6 +37,7 @@ button
    justify-content: center
    align-items: center
    transition: all 50ms linear
+   cursor: pointer
    &:hover
       filter: contrast(200%)
 </style>
