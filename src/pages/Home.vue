@@ -1,5 +1,5 @@
 <template>
-   <BaseInput width="25" height="7" placeholder="password" :active="false" />
+   <BaseInput width="25" height="7" placeholder="password" :active="true" :state="false" />
    <BaseCircleButton :side="3" @click="socialRegister('google')">
       <BaseIcon width="20" height="21" viewBox="0 0 20 21">
          <GoogleIcon />
@@ -15,6 +15,7 @@
          <FacebookIcon />
       </BaseIcon>
    </BaseCircleButton>
+   <FormProvvisorio />
 </template>
 
 <script>
@@ -24,10 +25,19 @@ import BaseIcon from '@/components/base/BaseIcon.vue'
 import GoogleIcon from '@/assets/icons/GoogleIcon.vue'
 import TwitterIcon from '@/assets/icons/TwitterIcon.vue'
 import FacebookIcon from '@/assets/icons/FacebookIcon.vue'
+import FormProvvisorio from '@/components/FormProvvisorio.vue'
 
 export default {
    name: 'Home',
-   components: { BaseInput, BaseCircleButton, BaseIcon, GoogleIcon, TwitterIcon, FacebookIcon },
+   components: {
+      BaseInput,
+      BaseCircleButton,
+      BaseIcon,
+      GoogleIcon,
+      TwitterIcon,
+      FacebookIcon,
+      FormProvvisorio
+   },
    methods: {
       socialRegister(type) {
          console.log(type)
