@@ -30,6 +30,9 @@ export default {
          if (state != null) {
             this.error = true
             this.errorMessage = state.message
+         } else {
+            this.error = false
+            this.errorMessage = ''
          }
       }
    }
