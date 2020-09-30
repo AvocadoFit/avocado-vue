@@ -3,8 +3,8 @@
       <input :placeholder="placeholder" :class="{ active: active }" />
       <div class="icon">
          <BaseIcon width="24" height="24" viewBox="0 0 24 24" v-if="isEvaluated">
-            <InputCorrect v-if="state" />
-            <InputError v-else />
+            <InputCorrectIcon v-if="state" />
+            <InputErrorIcon v-else />
          </BaseIcon>
       </div>
    </div>
@@ -12,12 +12,12 @@
 
 <script>
 import BaseIcon from '@/components/base/BaseIcon.vue'
-import InputError from '@/assets/icons/InputError.vue'
-import InputCorrect from '@/assets/icons/InputCorrect.vue'
+import InputErrorIcon from '@/assets/icons/InputErrorIcon.vue'
+import InputCorrectIcon from '@/assets/icons/InputCorrectIcon.vue'
 
 export default {
    name: 'BaseInput',
-   components: { BaseIcon, InputError, InputCorrect },
+   components: { BaseIcon, InputErrorIcon, InputCorrectIcon },
    props: {
       width: {
          type: String,
