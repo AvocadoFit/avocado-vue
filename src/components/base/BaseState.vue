@@ -1,14 +1,14 @@
 <template>
    <div class="circle" :class="{ active: active, current: current }">
-      <InputCorrect v-if="active" />
+      <InputCorrectIcon v-if="active" />
    </div>
 </template>
 
 <script>
-import InputCorrect from '@/assets/icons/InputCorrect.vue'
+import InputCorrectIcon from '@/assets/icons/InputCorrectIcon.vue'
 export default {
    name: 'BaseState',
-   components: { InputCorrect },
+   components: { InputCorrectIcon },
    props: {
       current: {
          type: Boolean,
