@@ -1,6 +1,6 @@
 <template>
-   <div class="circle" :class="{ active: active == 1, current: active == 2 }">
-      <InputCorrect v-if="isActive != 0" />
+   <div class="circle" :class="{ active: active, current: current }">
+      <InputCorrect v-if="active" />
    </div>
 </template>
 
@@ -10,15 +10,13 @@ export default {
    name: 'BaseState',
    components: { InputCorrect },
    props: {
+      current: {
+         type: Boolean,
+         required: true
+      },
       active: {
-         type: Number,
-         default: 0
-      }
-   },
-   computed: {
-      isActive() {
-         console.log(this.active)
-         return this.active
+         type: Boolean,
+         required: true
       }
    }
 }

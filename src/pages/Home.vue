@@ -19,15 +19,18 @@ export default {
          items: [
             {
                id: 1,
-               active: 0
+               current: true,
+               active: true
             },
             {
                id: 2,
-               active: 0
+               current: false,
+               active: false
             },
             {
                id: 3,
-               active: 0
+               current: false,
+               active: false
             }
          ]
       }
