@@ -21,6 +21,7 @@
    <BaseButton width="25" height="7" radius="12">
       create account
    </BaseButton>
+   <router-link to="/registration">registrati</router-link>
 </template>
 
 <script>

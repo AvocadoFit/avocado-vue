@@ -37,8 +37,8 @@ export default {
    data() {
       return {
          dimension: {
-            width: this.width + '%',
-            height: this.height + '%'
+            width: this.width + 'vw',
+            height: this.height + 'vh'
          }
       }
    },
@@ -58,7 +58,7 @@ export default {
 input
    width: 100%
    height: 100%
-   border-radius: 16px;
+   border-radius: 18px;
    border: 2px solid #D7D7D7
    padding: 0 25% 0 6%
    box-sizing: border-box
@@ -72,7 +72,7 @@ div[class="container active"]
    box-shadow: 0 0 20px #FE655850
 input[class="active"]
    box-shadow: inset 0 0 10px #FE655850
-   border: 2px solid #FE6558
+   border: .2rem solid #FE6558
    color: #FE6558
    &::placeholder
       color: #FE655890

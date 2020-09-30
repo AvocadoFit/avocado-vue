@@ -1,0 +1,248 @@
+<template>
+   <div class="fullpage">
+      <div class="right">
+         <div class="header flex">
+            <h3>Create account</h3>
+            <div class="flex">
+               <p>or</p>
+               <router-link to="/" class="login-link">
+                  <p>login</p>
+               </router-link>
+            </div>
+         </div>
+         <div class="body flex">
+            <div class="progressbar">
+               <ProgressBar :items="items" />
+            </div>
+            <div class="reg-form">
+               <BaseInput
+                  width="23"
+                  height="6.5"
+                  placeholder="email"
+                  @input="validateEmail"
+                  :state="emailState"
+                  class="input"
+               />
+               <div class="password-form">
+                  <BaseInput
+                     width="23"
+                     height="6.5"
+                     placeholder="password"
+                     @input="validatePassword"
+                     :state="passwordState.state"
+                     class="input"
+                  />
+                  <div class="password-state">
+                     <p>password must contain :</p>
+                     <div class="grid2x2">
+                        <div>
+                           <div
+                              class="circle"
+                              :class="{
+                                 'circle-red': passwordState.lower_case === false,
+                                 'circle-green': passwordState.lower_case
+                              }"
+                           ></div>
+                           lower-case
+                        </div>
+                        <div>
+                           <div
+                              class="circle"
+                              :class="{
+                                 'circle-red': passwordState.numbers === false,
+                                 'circle-green': passwordState.numbers
+                              }"
+                           ></div>
+                           numbers
+                        </div>
+                        <div>
+                           <div
+                              class="circle"
+                              :class="{
+                                 'circle-red': passwordState.upper_case === false,
+                                 'circle-green': passwordState.upper_case
+                              }"
+                           ></div>
+                           upper-case
+                        </div>
+                        <div>
+                           <div
+                              class="circle"
+                              :class="{
+                                 'circle-red': passwordState.num_characters === false,
+                                 'circle-green': passwordState.num_characters
+                              }"
+                           ></div>
+                           6-24 characters
+                        </div>
+                     </div>
+                  </div>
+                  <BaseInput
+                     width="23"
+                     height="7"
+                     placeholder="repeat password"
+                     @input="doesPasswordMatch"
+                     :state="passwordMatchState"
+                     class="input"
+                  />
+               </div>
+               <div class="flex policy">
+                  <input type="checkbox" name="policy" />
+                  <p>
+                     Creating an account means you’re okay with our Terms of Service, Privacy
+                     Policy, and our default Notification Settings.
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div class="buttons"></div>
+      </div>
+   </div>
+</template>
+
+<script>
+import BaseInput from '@/components/base/BaseInput.vue'
+import ProgressBar from '@/components/ProgressBar.vue'
+import { emailValidator, passwordValidator } from '@/utils.js'
+import { defaultPasswordState } from '@/utils.js'
+
+export default {
+   name: 'RegistrationPage',
+   components: { BaseInput, ProgressBar },
+   data() {
+      return {
+         emailState: null,
+         passwordState: defaultPasswordState,
+         passwordMatchState: null,
+         password: null,
+         items: [
+            {
+               id: 1,
+               current: true,
+               active: true
+            },
+            {
+               id: 2,
+               current: false,
+               active: false
+            },
+            {
+               id: 3,
+               current: false,
+               active: false
+            }
+         ]
+      }
+   },
+   methods: {
+      validateEmail(event) {
+         var email = event.target.value
+         this.emailState = email == '' ? null : emailValidator(email)
+      },
+      validatePassword(event) {
+         this.password = event.target.value
+         this.passwordState = passwordValidator(this.password)
+         if (this.password == '') this.passwordState = defaultPasswordState
+      },
+      doesPasswordMatch(event) {
+         var password2 = event.target.value
+         this.passwordMatchState = this.password === password2
+         if (password2 === '') this.passwordMatchState = null
+      }
+   }
+}
+</script>
+
+<style lang="sass" scoped>
+@import '@/assets/variables.scss'
+
+.fullpage
+   width: 100vw
+   height: 100vh
+   background-color: map-get($colors, 'primary')
+.right
+   width: 40%
+   height: calc(100% - 3vw)
+   margin: 1.5vw
+   background-color: white
+   float: right
+   border-radius: 20px
+   padding: 0 5vw
+   box-sizing: border-box
+.flex
+   display: flex
+   justify-content: space-between
+   align-items: center
+.header
+   height: 17%
+   align-items: flex-end
+   & h3
+      color: #696969
+      font-size: 40px
+      font-weight: 500
+   & p
+      margin-right: 1vw
+      color: #ABABAB
+   & .login-link
+      text-decoration: none
+      & p
+         color: map-get($colors, 'secondary')
+         margin: 0
+.body
+   width: 100%
+   height: 60%
+   padding: 5vh 0 0 0
+   & .progressbar
+      width: 20%
+      height: 100%
+   & .reg-form
+      color: #BABABA
+      width: 80%
+      height: 100%
+      display: flex
+      flex-direction: column
+      align-items: flex-end
+      justify-content: flex-start
+      padding: 0 0 0 2vw
+      & .password-form
+         margin: 4vh 0 0 0
+         & .password-state
+            margin: 1vh 0 1.7vh .7vw
+            & p
+               margin-bottom: .7vh
+            .grid2x2
+               display: grid
+               grid-template-rows: auto auto
+               grid-template-columns: auto auto
+               font-weight: 400
+               font-size: 15px
+               & > div
+                  display: flex
+                  justify-content: flex-start
+                  align-items: center
+                  & .circle
+                     width: 8px
+                     height: 8px
+                     background-color: #ABABAB
+                     border-radius: 5px
+                     margin-right: .7vw
+                     transition: all 200ms linear
+                  & .circle-red
+                     background-color: #FF0000
+                     transition: all 200ms linear
+                  & .circle-green
+                     background-color: #04DF00
+                     transition: all 200ms linear
+      & .policy
+         margin: 4vh 0 0 0
+         display: flex
+         align-items: flex-start
+         justify-content: space-between
+         & input
+            margin: .2vh 0 0 .6vw
+         & p
+            margin-left: 1vw
+            font-size: 15px
+   & .reg-form[class="reg-form active"]
+      color: #454545
+</style>
