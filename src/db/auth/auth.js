@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app'
 // Set the configuration for your app
 // TODO: Replace with your project's config object
 var firebaseConfig = {

@@ -1,34 +1,40 @@
 <template>
-   <div class="container" :key="item.id" v-for="item in items">
+   <div class="container" :key="item.id" v-for="(item, index) in items">
       <BaseState :active="item.active" :current="item.current" />
-      <BaseIcon
-         width="3"
-         height="99"
-         viewBox="0 0 3 99"
-         :color="item.active == item.current ? '#d7d7d7' : '#FE6558'"
+      <div
+         class="line"
          v-if="item.id != items.length"
-      >
-         <ProgressLine />
-      </BaseIcon>
+         :class="item.active == item.current ? 'grey' : 'secondary'"
+         :style="{ height: this.sizes[index] + 'vh' }"
+      ></div>
    </div>
 </template>
 
 <script>
 import BaseState from '@/components/base/BaseState.vue'
-import ProgressLine from '@/assets/icons/ProgressLine.vue'
-import BaseIcon from '@/components/base/BaseIcon.vue'
+
 export default {
    name: 'ProgressBar',
-   components: { BaseState, ProgressLine, BaseIcon },
+   components: { BaseState },
    props: {
-      items: Array
+      items: Array,
+      sizes: Array
    }
 }
 </script>
 
 <style lang="sass" scoped>
+@import '@/assets/variables.scss'
+
 .container
    display: flex
    align-items: center
    flex-direction: column
+   & .line
+      width: 3px
+
+.grey
+   background-color: #D7D7D7
+.secondary
+   background-color: map-get($colors, 'secondary')
 </style>

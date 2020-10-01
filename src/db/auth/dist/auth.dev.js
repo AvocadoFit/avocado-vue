@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _firebase = _interopRequireDefault(require("firebase"));
+var _app = _interopRequireDefault(require("firebase/app"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -22,7 +22,7 @@ var firebaseConfig = {
   measurementId: 'G-2Q6B1DZK47'
 };
 
-_firebase["default"].initializeApp(firebaseConfig);
+_app["default"].initializeApp(firebaseConfig);
 
 var addUserToFirebase = function addUserToFirebase(email, password) {
   var value;
@@ -32,7 +32,7 @@ var addUserToFirebase = function addUserToFirebase(email, password) {
         case 0:
           value = null;
           _context.next = 3;
-          return regeneratorRuntime.awrap(_firebase["default"].auth().createUserWithEmailAndPassword(email, password)["catch"](function (error) {
+          return regeneratorRuntime.awrap(_app["default"].auth().createUserWithEmailAndPassword(email, password)["catch"](function (error) {
             value = error;
           }));
 

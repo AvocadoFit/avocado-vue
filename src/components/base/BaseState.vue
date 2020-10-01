@@ -1,14 +1,18 @@
 <template>
    <div class="circle" :class="{ active: active, current: current }">
-      <InputCorrectIcon v-if="active" />
+      <BaseIcon width="14" height="14" viewBox="0 0 14 14" class="check-icon">
+         <CheckWhiteIcon v-if="active" />
+      </BaseIcon>
    </div>
 </template>
 
 <script>
-import InputCorrectIcon from '@/assets/icons/InputCorrectIcon.vue'
+import CheckWhiteIcon from '@/assets/icons/CheckWhiteIcon.vue'
+import BaseIcon from '@/components/base/BaseIcon.vue'
+
 export default {
    name: 'BaseState',
-   components: { InputCorrectIcon },
+   components: { CheckWhiteIcon, BaseIcon },
    props: {
       current: {
          type: Boolean,
@@ -31,6 +35,7 @@ export default {
    display: flex
    justify-content: center
    align-items: center
+   transition: all 200ms linear
 .active
    background-color: #FE6558
 .current
@@ -38,5 +43,9 @@ export default {
    width: 46px
    height: 46px
    border-radius: 23px
-   box-shadow: 1px 1px 10px 1px #FE6558
+   box-shadow: 0px 0px 15px #FE655890
+   & .check-icon
+      width: 20px
+      height: 20px
+      viewBox: 0 0 20px 20px
 </style>

@@ -12,7 +12,7 @@
          </div>
          <div class="body flex">
             <div class="progressbar">
-               <ProgressBar :items="items" />
+               <ProgressBar :items="items" :sizes="['6.2', '21']" />
             </div>
             <div class="reg-form">
                <BaseInput
@@ -95,7 +95,35 @@
                </div>
             </div>
          </div>
-         <div class="buttons"></div>
+         <div class="buttons">
+            <BaseButton
+               width="40"
+               height="60"
+               :active="true"
+               color="#FE6558"
+               :shadow="true"
+               @click="baseRegistration"
+               >create account</BaseButton
+            >
+            <p>or</p>
+            <div class="social">
+               <BaseCircleButton :side="4">
+                  <BaseIcon width="25" height="25" viewBox="0 0 25 25">
+                     <FacebookIcon />
+                  </BaseIcon>
+               </BaseCircleButton>
+               <BaseCircleButton :side="4">
+                  <BaseIcon width="24" height="21" viewBox="0 0 24 21">
+                     <TwitterIcon />
+                  </BaseIcon>
+               </BaseCircleButton>
+               <BaseCircleButton :side="4">
+                  <BaseIcon width="20" height="21" viewBox="0 0 20 21">
+                     <GoogleIcon />
+                  </BaseIcon>
+               </BaseCircleButton>
+            </div>
+         </div>
       </div>
    </div>
 </template>
@@ -103,12 +131,27 @@
 <script>
 import BaseInput from '@/components/base/BaseInput.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
+import BaseButton from '@/components/base/BaseButton.vue'
+import BaseCircleButton from '@/components/base/BaseCircleButton.vue'
+import BaseIcon from '@/components/base/BaseIcon.vue'
+import FacebookIcon from '@/assets/icons/FacebookIcon.vue'
+import TwitterIcon from '@/assets/icons/TwitterIcon.vue'
+import GoogleIcon from '@/assets/icons/GoogleIcon.vue'
 import { emailValidator, passwordValidator } from '@/utils.js'
 import { defaultPasswordState } from '@/utils.js'
 
 export default {
    name: 'RegistrationPage',
-   components: { BaseInput, ProgressBar },
+   components: {
+      BaseInput,
+      ProgressBar,
+      BaseButton,
+      BaseCircleButton,
+      BaseIcon,
+      FacebookIcon,
+      TwitterIcon,
+      GoogleIcon
+   },
    data() {
       return {
          emailState: null,
@@ -118,13 +161,13 @@ export default {
          items: [
             {
                id: 1,
-               current: true,
+               current: false,
                active: true
             },
             {
                id: 2,
-               current: false,
-               active: false
+               current: true,
+               active: true
             },
             {
                id: 3,
@@ -148,6 +191,9 @@ export default {
          var password2 = event.target.value
          this.passwordMatchState = this.password === password2
          if (password2 === '') this.passwordMatchState = null
+      },
+      baseRegistration() {
+         console.log('clicked')
       }
    }
 }
@@ -190,9 +236,10 @@ export default {
          margin: 0
 .body
    width: 100%
-   height: 60%
-   padding: 5vh 0 0 0
+   height: 52%
+   padding: 6vh 0 0 0
    & .progressbar
+      padding: 3vh 0 0 0
       width: 20%
       height: 100%
    & .reg-form
@@ -245,4 +292,14 @@ export default {
             font-size: 15px
    & .reg-form[class="reg-form active"]
       color: #454545
+.buttons
+   height: 10%
+   width: 100%
+   display: flex
+   justify-content: space-between
+   align-items: center
+   & .social
+      display: flex
+      justify-content: space-between
+      align-items: center
 </style>

@@ -26,7 +26,7 @@ export default {
       },
       radius: {
          type: String,
-         default: '10'
+         default: '15'
       },
       shadow: {
          type: Boolean,
@@ -34,13 +34,14 @@ export default {
       }
    },
    data() {
+      let shadowColor = `0 0 20px ${this.color}70`
       return {
          style: {
             height: this.height + '%',
             width: this.width + '%',
-            'background-color': this.color,
+            'background-color': this.active ? this.color : '#D7D7D7',
             'border-radius': this.radius + 'px',
-            'box-shadow': this.shadow ? '2px 2px 20px 1px ' + this.color : ''
+            'box-shadow': this.active && this.shadow ? shadowColor : ''
          }
       }
    },
@@ -60,4 +61,5 @@ button
    align-items: center
    font-weight: bold
    color: white
+   font-size: 15px
 </style>
