@@ -18,7 +18,21 @@ export default {
    components: { BaseState },
    props: {
       items: Array,
-      sizes: Array
+      numItems: {
+         type: Number,
+         required: true
+      },
+      sizes: {
+         type: Array,
+         required: true,
+         validator: function() {
+            return this.numItems == this.sizes
+         }
+      },
+      current: {
+         type: Number,
+         default: 1
+      }
    }
 }
 </script>

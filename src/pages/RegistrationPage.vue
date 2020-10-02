@@ -13,6 +13,7 @@
          <div class="body flex">
             <div class="progressbar">
                <ProgressBar :items="items" :sizes="['6.2', '21']" />
+               <ProgressBar numItems="3" :sizes="['6.2', '21']" />
             </div>
             <div class="reg-form">
                <BaseInput
@@ -22,6 +23,8 @@
                   @input="validateEmail"
                   :state="emailState"
                   class="input"
+                  :active="formState.email.active"
+                  :disabled="formState.email.disabled"
                />
                <div class="password-form">
                   <BaseInput
@@ -31,6 +34,8 @@
                      @input="validatePassword"
                      :state="passwordState.state"
                      class="input"
+                     :active="formState.password.active"
+                     :disabled="isPasswordDisabled"
                   />
                   <div class="password-state">
                      <p>password must contain :</p>
@@ -84,6 +89,8 @@
                      @input="doesPasswordMatch"
                      :state="passwordMatchState"
                      class="input"
+                     :active="formState.password.active"
+                     :disabled="isPasswordDisabled"
                   />
                </div>
                <div class="flex policy">
@@ -99,7 +106,7 @@
             <BaseButton
                width="40"
                height="60"
-               :active="true"
+               :active="formState.button"
                color="#FE6558"
                :shadow="true"
                @click="baseRegistration"
@@ -161,20 +168,37 @@ export default {
          items: [
             {
                id: 1,
-               current: false,
+               current: true,
                active: true
             },
             {
                id: 2,
-               current: true,
-               active: true
+               current: false,
+               active: false
             },
             {
                id: 3,
                current: false,
                active: false
             }
-         ]
+         ],
+         formState: {
+            email: {
+               active: true,
+               disabled: false
+            },
+            password: {
+               active: false,
+               disabled: true
+            },
+            button: false
+         }
+      }
+   },
+   computed: {
+      isPasswordDisabled() {
+         console.log(!this.emailState)
+         return !this.emailState
       }
    },
    methods: {

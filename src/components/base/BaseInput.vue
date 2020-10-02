@@ -1,6 +1,6 @@
 <template>
    <div class="container" :style="dimension" :class="{ active: active }">
-      <input :placeholder="placeholder" :class="{ active: active }" />
+      <input :placeholder="placeholder" :class="{ active: active }" :disabled="disabled" />
       <div class="icon">
          <BaseIcon width="24" height="24" viewBox="0 0 24 24" v-if="isEvaluated">
             <InputCorrectIcon v-if="state" />
@@ -28,6 +28,10 @@ export default {
       active: {
          type: Boolean,
          default: false
+      },
+      disabled: {
+         type: Boolean,
+         required: true
       },
       state: {
          type: Boolean,

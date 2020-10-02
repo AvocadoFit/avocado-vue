@@ -62,4 +62,6 @@ button
    font-weight: bold
    color: white
    font-size: 15px
+   &:focus-within
+      outline: none
 </style>
