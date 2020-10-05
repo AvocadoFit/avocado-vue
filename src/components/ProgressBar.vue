@@ -1,12 +1,14 @@
 <template>
-   <div class="container" :key="item.id" v-for="(item, index) in items">
-      <BaseState :active="item.active" :current="item.current" />
+   <div class="container" :key="index" v-for="(item, index) in this.generateState">
+      <!-- <BaseState :active="item.active" :current="item.current" />
       <div
          class="line"
          v-if="item.id != items.length"
          :class="item.active == item.current ? 'grey' : 'secondary'"
-         :style="{ height: this.sizes[index] + 'vh' }"
-      ></div>
+         :style="{ height: this.config.sizes[index] + 'vh' }"
+      ></div> -->
+      <BaseState />
+      ciao
    </div>
 </template>
 
@@ -17,21 +19,32 @@ export default {
    name: 'ProgressBar',
    components: { BaseState },
    props: {
-      items: Array,
-      numItems: {
-         type: Number,
-         required: true
-      },
-      sizes: {
-         type: Array,
-         required: true,
-         validator: function() {
-            return this.numItems == this.sizes
+      config: {
+         numItems: {
+            type: Number,
+            required: true
+         },
+         sizes: {
+            type: Array,
+            required: true
+         },
+         current: {
+            type: Number,
+            required: true
+         },
+         validator(config) {
+            return config.numItems === config.sizes.length + 1 && config.current <= config.numItems
          }
       },
       current: {
          type: Number,
          default: 1
+      }
+   },
+   computed: {
+      generateState() {
+         var state = []
+         return 0
       }
    }
 }

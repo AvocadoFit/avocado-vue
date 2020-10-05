@@ -12,8 +12,7 @@
          </div>
          <div class="body flex">
             <div class="progressbar">
-               <ProgressBar :items="items" :sizes="['6.2', '21']" />
-               <ProgressBar numItems="3" :sizes="['6.2', '21']" />
+               <ProgressBar :config="{ numItems: 3, sizes: ['6.2', '2'], current: 1 }" />
             </div>
             <div class="reg-form">
                <BaseInput
@@ -197,7 +196,6 @@ export default {
    },
    computed: {
       isPasswordDisabled() {
-         console.log(!this.emailState)
          return !this.emailState
       }
    },
