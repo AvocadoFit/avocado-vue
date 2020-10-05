@@ -12,7 +12,9 @@
          </div>
          <div class="body flex">
             <div class="progressbar">
-               <ProgressBar :config="{ numItems: 3, sizes: ['6.2', '2'], current: 1 }" />
+               <ProgressBar
+                  :config="{ numItems: 3, sizes: ['6.2', '21'], current: this.formState.current }"
+               />
             </div>
             <div class="reg-form">
                <BaseInput
@@ -24,6 +26,7 @@
                   class="input"
                   :active="formState.email.active"
                   :disabled="formState.email.disabled"
+                  @click="changeCurrent(1)"
                />
                <div class="password-form">
                   <BaseInput
@@ -35,6 +38,7 @@
                      class="input"
                      :active="formState.password.active"
                      :disabled="isPasswordDisabled"
+                     @click="changeCurrent(2)"
                   />
                   <div class="password-state">
                      <p>password must contain :</p>
@@ -90,10 +94,16 @@
                      class="input"
                      :active="formState.password.active"
                      :disabled="isPasswordDisabled"
+                     @click="changeCurrent(2)"
                   />
                </div>
                <div class="flex policy">
-                  <input type="checkbox" name="policy" />
+                  <input
+                     type="checkbox"
+                     name="policy"
+                     :disabled="isCheckboxDisabled"
+                     @click="changeCurrent(3)"
+                  />
                   <p>
                      Creating an account means you’re okay with our Terms of Service, Privacy
                      Policy, and our default Notification Settings.
@@ -164,23 +174,6 @@ export default {
          passwordState: defaultPasswordState,
          passwordMatchState: null,
          password: null,
-         items: [
-            {
-               id: 1,
-               current: true,
-               active: true
-            },
-            {
-               id: 2,
-               current: false,
-               active: false
-            },
-            {
-               id: 3,
-               current: false,
-               active: false
-            }
-         ],
          formState: {
             email: {
                active: true,
@@ -190,13 +183,21 @@ export default {
                active: false,
                disabled: true
             },
-            button: false
+            button: false,
+            current: 1
          }
       }
    },
    computed: {
       isPasswordDisabled() {
+         console.log(this.emailState)
+         console.log(!this.emailState)
          return !this.emailState
+      },
+      isCheckboxDisabled() {
+         console.log(this.passwordMatchState)
+         console.log(!this.passwordMatchState)
+         return !this.passwordMatchState
       }
    },
    methods: {
@@ -216,6 +217,9 @@ export default {
       },
       baseRegistration() {
          console.log('clicked')
+      },
+      changeCurrent(newCurrent) {
+         this.formState.current = newCurrent
       }
    }
 }

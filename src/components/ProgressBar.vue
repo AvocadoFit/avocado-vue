@@ -1,14 +1,12 @@
 <template>
    <div class="container" :key="index" v-for="(item, index) in this.generateState">
-      <!-- <BaseState :active="item.active" :current="item.current" />
+      <BaseState :active="item.active" :current="item.current" />
       <div
          class="line"
-         v-if="item.id != items.length"
+         v-if="item.id != this.config.numItems"
          :class="item.active == item.current ? 'grey' : 'secondary'"
          :style="{ height: this.config.sizes[index] + 'vh' }"
-      ></div> -->
-      <BaseState />
-      ciao
+      ></div>
    </div>
 </template>
 
@@ -44,7 +42,13 @@ export default {
    computed: {
       generateState() {
          var state = []
-         return 0
+         for (var i = 0; i < this.config.numItems; i++) {
+            var item = { active: false, current: false }
+            if (this.config.current - 1 == i) item.current = true
+            if (i <= this.config.current - 1) item.active = true
+            state.push(item)
+         }
+         return state
       }
    }
 }
