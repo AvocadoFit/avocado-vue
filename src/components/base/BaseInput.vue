@@ -1,6 +1,12 @@
 <template>
    <div class="container" :style="dimension" :class="{ active: active }">
-      <input :placeholder="placeholder" :class="{ active: active }" :disabled="disabled" />
+      <input
+         :placeholder="placeholder"
+         :class="{ active: active }"
+         :style="textColorStyle"
+         :disabled="disabled"
+         @focus="emitFocus"
+      />
       <div class="icon">
          <BaseIcon width="24" height="24" viewBox="0 0 24 24" v-if="isEvaluated">
             <InputCorrectIcon v-if="state" />
@@ -25,6 +31,10 @@ export default {
       },
       height: String,
       placeholder: String,
+      textColor: {
+         type: String,
+         defautl: null
+      },
       active: {
          type: Boolean,
          default: false
@@ -40,15 +50,24 @@ export default {
    },
    data() {
       return {
+         // Style data
          dimension: {
             width: this.width + 'vw',
             height: this.height + 'vh'
+         },
+         textColorStyle: {
+            color: this.textColor
          }
       }
    },
    computed: {
       isEvaluated() {
          return this.state != null
+      }
+   },
+   methods: {
+      emitFocus() {
+         this.$emit('focus')
       }
    }
 }
@@ -68,18 +87,24 @@ input
    box-sizing: border-box
    font-size: 16px
    color: #45454580
+   transition: all 200ms linear
    &::placeholder
       color: #45454580
    &:focus-within
       outline: none
-div[class="container active"]
-   box-shadow: 0 0 20px #FE655850
+div[class="container active input"]
+   border-radius: 20px
+   box-shadow: 0 0 10px #FE655820
 input[class="active"]
-   box-shadow: inset 0 0 10px #FE655850
-   border: .2rem solid #FE6558
+   box-shadow: inset 0 0 10px #FE655830
+   border: 2px solid #FE6558
    color: #FE6558
    &::placeholder
       color: #FE655890
+input[class="just-actived"]
+   color: #FE6558
+input[disabled]
+   background-color: white
 .icon
    position: absolute
    top: 0

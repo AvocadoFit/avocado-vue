@@ -13,7 +13,7 @@
          <div class="body flex">
             <div class="progressbar">
                <ProgressBar
-                  :config="{ numItems: 3, sizes: ['6.2', '21'], current: this.formState.current }"
+                  :config="{ numItems: 3, sizes: ['6.2', '21'], current: this.current }"
                />
             </div>
             <div class="reg-form">
@@ -24,9 +24,10 @@
                   @input="validateEmail"
                   :state="emailState"
                   class="input"
-                  :active="formState.email.active"
+                  :active="inputActive == 1"
+                  textColor="#FE6558"
                   :disabled="formState.email.disabled"
-                  @click="changeCurrent(1)"
+                  @focus="changeActive(1)"
                />
                <div class="password-form">
                   <BaseInput
@@ -36,11 +37,12 @@
                      @input="validatePassword"
                      :state="passwordState.state"
                      class="input"
-                     :active="formState.password.active"
+                     :active="inputActive == 2"
+                     textColor="#FE6558"
                      :disabled="isPasswordDisabled"
-                     @click="changeCurrent(2)"
+                     @focus="changeActive(2)"
                   />
-                  <div class="password-state">
+                  <div class="password-state" :class="{ active: inputActive == 2 }">
                      <p>password must contain :</p>
                      <div class="grid2x2">
                         <div>
@@ -92,17 +94,18 @@
                      @input="doesPasswordMatch"
                      :state="passwordMatchState"
                      class="input"
-                     :active="formState.password.active"
+                     :active="inputActive == 2"
+                     textColor="#FE6558"
                      :disabled="isPasswordDisabled"
-                     @click="changeCurrent(2)"
+                     @focus="changeActive(2)"
                   />
                </div>
-               <div class="flex policy">
+               <div class="flex policy" :class="{ active: inputActive == 3 }">
                   <input
                      type="checkbox"
                      name="policy"
                      :disabled="isCheckboxDisabled"
-                     @click="checkboxUpdate()"
+                     @click="changeActive(3)"
                   />
                   <p>
                      Creating an account means you’re okay with our Terms of Service, Privacy
@@ -128,13 +131,16 @@
                      <FacebookIcon />
                   </BaseIcon>
                </BaseCircleButton> -->
-               <BaseCircleButton :side="4" @click="googleRegistration">
+               <BaseCircleButton :side="3.5" @click="googleRegistration">
                   <BaseIcon width="20" height="21" viewBox="0 0 20 21">
                      <GoogleIcon />
                   </BaseIcon>
                </BaseCircleButton>
             </div>
          </div>
+         <p v-if="error">
+            {{ this.error }}
+         </p>
       </div>
    </div>
 </template>
@@ -172,6 +178,8 @@ export default {
             password: null,
             email: null
          },
+         inputActive: 1, // email, password or checkbox
+         current: 1,
          formState: {
             email: {
                active: true,
@@ -180,9 +188,9 @@ export default {
             password: {
                active: false,
                disabled: true
-            },
-            current: 1
-         }
+            }
+         },
+         error: null
       }
    },
    computed: {
@@ -193,11 +201,17 @@ export default {
          return !this.passwordMatchState
       },
       isButtonEnabled() {
-         console.log('btnEnableCheck')
          return this.emailState && this.passwordMatchState && this.checkboxState
       }
    },
    methods: {
+      // UI methods
+      changeActive(toActive) {
+         if (toActive == 3) this.checkboxState = !this.checkboxState
+         if (toActive > this.current) this.current = toActive
+         this.inputActive = toActive
+      },
+      // Validation methods
       validateEmail(event) {
          var email = event.target.value
          if (emailValidator(email)) {
@@ -218,15 +232,11 @@ export default {
          this.passwordMatchState = this.credentials.password === password2
          if (password2 === '') this.passwordMatchState = null
       },
-      baseRegistration() {
-         addUserToFirebaseByMail(this.credentials)
-      },
-      checkboxUpdate() {
-         this.checkboxState = !this.checkboxState
-         this.changeCurrent(3)
-      },
-      changeCurrent(newCurrent) {
-         this.formState.current = newCurrent
+      // Registration methods
+      async baseRegistration() {
+         this.error = null
+         var esit = await addUserToFirebaseByMail(this.credentials)
+         if (esit) this.error = esit.message
       },
       googleRegistration() {
          addUserToFirebaseByGoogle()
@@ -297,7 +307,7 @@ export default {
                display: grid
                grid-template-rows: auto auto
                grid-template-columns: auto auto
-               font-weight: 400
+               font-weight: 300
                font-size: 15px
                & > div
                   display: flex
@@ -316,6 +326,8 @@ export default {
                   & .circle-green
                      background-color: #04DF00
                      transition: all 200ms linear
+         & .password-state[class="password-state active"]
+            color: #454545
       & .policy
          margin: 4vh 0 0 0
          display: flex
@@ -325,7 +337,9 @@ export default {
             margin: .2vh 0 0 .6vw
          & p
             margin-left: 1vw
-            font-size: 15px
+            font-size: 17px
+      & .policy[class="flex policy active"]
+         color: #454545
    & .reg-form[class="reg-form active"]
       color: #454545
 .buttons
@@ -338,4 +352,6 @@ export default {
       display: flex
       justify-content: space-between
       align-items: center
+.input[class="container input actived"] > input
+   color: tomato !important
 </style>
