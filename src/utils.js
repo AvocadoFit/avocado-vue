@@ -29,7 +29,6 @@ var passwordValidator = password => {
    //update state
    Object.entries(state).forEach(value => {
       state.state = state.state && value[1]
-      console.log(state)
    })
    return state
 }

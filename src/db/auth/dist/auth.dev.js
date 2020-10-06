@@ -3,9 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.addUserToFirebaseByGoogle = exports.addUserToFirebaseByMail = void 0;
 
-var _app = _interopRequireDefault(require("firebase/app"));
+var _firebase = _interopRequireDefault(require("firebase"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -22,24 +22,26 @@ var firebaseConfig = {
   measurementId: 'G-2Q6B1DZK47'
 };
 
-_app["default"].initializeApp(firebaseConfig);
+_firebase["default"].initializeApp(firebaseConfig);
 
-var addUserToFirebase = function addUserToFirebase(email, password) {
+var addUserToFirebaseByMail = function addUserToFirebaseByMail(credentials) {
   var value;
-  return regeneratorRuntime.async(function addUserToFirebase$(_context) {
+  return regeneratorRuntime.async(function addUserToFirebaseByMail$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           value = null;
-          _context.next = 3;
-          return regeneratorRuntime.awrap(_app["default"].auth().createUserWithEmailAndPassword(email, password)["catch"](function (error) {
+          console.log('email  ' + credentials.email);
+          console.log('password  ' + credentials.password);
+          _context.next = 5;
+          return regeneratorRuntime.awrap(_firebase["default"].auth().createUserWithEmailAndPassword(credentials.email, credentials.password)["catch"](function (error) {
             value = error;
           }));
 
-        case 3:
+        case 5:
           return _context.abrupt("return", value);
 
-        case 4:
+        case 6:
         case "end":
           return _context.stop();
       }
@@ -47,5 +49,49 @@ var addUserToFirebase = function addUserToFirebase(email, password) {
   });
 };
 
-var _default = addUserToFirebase;
-exports["default"] = _default;
+exports.addUserToFirebaseByMail = addUserToFirebaseByMail;
+
+var addUserToFirebaseByGoogle = function addUserToFirebaseByGoogle() {
+  var provider;
+  return regeneratorRuntime.async(function addUserToFirebaseByGoogle$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          provider = new _firebase["default"].auth.GoogleAuthProvider();
+
+          _firebase["default"].auth().signInWithPopup(provider).then(function (result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            var token = result.credential.accessToken; // The signed-in user info.
+
+            var user = result.user; // ...
+
+            console.log('token: ' + token);
+            console.log('user: ' + user);
+
+            for (var a in user) {
+              console.log(a + ' :  ' + user[a]);
+            }
+          })["catch"](function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message; // The email of the user's account used.
+
+            var email = error.email; // The firebase.auth.AuthCredential type that was used.
+
+            var credential = error.credential; // ...
+
+            errorCode;
+            console.log(errorMessage);
+            email;
+            credential;
+          });
+
+        case 2:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
+};
+
+exports.addUserToFirebaseByGoogle = addUserToFirebaseByGoogle;

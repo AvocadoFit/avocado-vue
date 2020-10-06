@@ -29,7 +29,6 @@ import BaseInput from '@/components/base/BaseInput.vue'
 import BaseCircleButton from '@/components/base/BaseCircleButton.vue'
 import BaseIcon from '@/components/base/BaseIcon.vue'
 import GoogleIcon from '@/assets/icons/GoogleIcon.vue'
-import TwitterIcon from '@/assets/icons/TwitterIcon.vue'
 import FacebookIcon from '@/assets/icons/FacebookIcon.vue'
 import FormProvvisorio from '@/components/FormProvvisorio.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
@@ -42,7 +41,6 @@ export default {
       BaseCircleButton,
       BaseIcon,
       GoogleIcon,
-      TwitterIcon,
       FacebookIcon,
       FormProvvisorio,
       BaseButton,

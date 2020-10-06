@@ -102,7 +102,7 @@
                      type="checkbox"
                      name="policy"
                      :disabled="isCheckboxDisabled"
-                     @click="changeCurrent(3)"
+                     @click="checkboxUpdate()"
                   />
                   <p>
                      Creating an account means you’re okay with our Terms of Service, Privacy
@@ -115,7 +115,7 @@
             <BaseButton
                width="40"
                height="60"
-               :active="formState.button"
+               :active="isButtonEnabled"
                color="#FE6558"
                :shadow="true"
                @click="baseRegistration"
@@ -123,17 +123,12 @@
             >
             <p>or</p>
             <div class="social">
-               <BaseCircleButton :side="4">
+               <!-- <BaseCircleButton :side="4">
                   <BaseIcon width="25" height="25" viewBox="0 0 25 25">
                      <FacebookIcon />
                   </BaseIcon>
-               </BaseCircleButton>
-               <BaseCircleButton :side="4">
-                  <BaseIcon width="24" height="21" viewBox="0 0 24 21">
-                     <TwitterIcon />
-                  </BaseIcon>
-               </BaseCircleButton>
-               <BaseCircleButton :side="4">
+               </BaseCircleButton> -->
+               <BaseCircleButton :side="4" @click="googleRegistration">
                   <BaseIcon width="20" height="21" viewBox="0 0 20 21">
                      <GoogleIcon />
                   </BaseIcon>
@@ -150,11 +145,11 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCircleButton from '@/components/base/BaseCircleButton.vue'
 import BaseIcon from '@/components/base/BaseIcon.vue'
-import FacebookIcon from '@/assets/icons/FacebookIcon.vue'
-import TwitterIcon from '@/assets/icons/TwitterIcon.vue'
+// import FacebookIcon from '@/assets/icons/FacebookIcon.vue'
 import GoogleIcon from '@/assets/icons/GoogleIcon.vue'
 import { emailValidator, passwordValidator } from '@/utils.js'
 import { defaultPasswordState } from '@/utils.js'
+import { addUserToFirebaseByMail, addUserToFirebaseByGoogle } from '@/db/auth/auth.js'
 
 export default {
    name: 'RegistrationPage',
@@ -164,8 +159,7 @@ export default {
       BaseButton,
       BaseCircleButton,
       BaseIcon,
-      FacebookIcon,
-      TwitterIcon,
+      // FacebookIcon,
       GoogleIcon
    },
    data() {
@@ -173,7 +167,11 @@ export default {
          emailState: null,
          passwordState: defaultPasswordState,
          passwordMatchState: null,
-         password: null,
+         checkboxState: null,
+         credentials: {
+            password: null,
+            email: null
+         },
          formState: {
             email: {
                active: true,
@@ -183,43 +181,55 @@ export default {
                active: false,
                disabled: true
             },
-            button: false,
             current: 1
          }
       }
    },
    computed: {
       isPasswordDisabled() {
-         console.log(this.emailState)
-         console.log(!this.emailState)
          return !this.emailState
       },
       isCheckboxDisabled() {
-         console.log(this.passwordMatchState)
-         console.log(!this.passwordMatchState)
          return !this.passwordMatchState
+      },
+      isButtonEnabled() {
+         console.log('btnEnableCheck')
+         return this.emailState && this.passwordMatchState && this.checkboxState
       }
    },
    methods: {
       validateEmail(event) {
          var email = event.target.value
-         this.emailState = email == '' ? null : emailValidator(email)
+         if (emailValidator(email)) {
+            this.emailState = true
+            this.credentials.email = email
+         } else {
+            this.emailState = false
+            this.credentials.email = null
+         }
       },
       validatePassword(event) {
-         this.password = event.target.value
-         this.passwordState = passwordValidator(this.password)
-         if (this.password == '') this.passwordState = defaultPasswordState
+         this.credentials.password = event.target.value
+         this.passwordState = passwordValidator(this.credentials.password)
+         if (this.credentials.password == '') this.passwordState = defaultPasswordState
       },
       doesPasswordMatch(event) {
          var password2 = event.target.value
-         this.passwordMatchState = this.password === password2
+         this.passwordMatchState = this.credentials.password === password2
          if (password2 === '') this.passwordMatchState = null
       },
       baseRegistration() {
-         console.log('clicked')
+         addUserToFirebaseByMail(this.credentials)
+      },
+      checkboxUpdate() {
+         this.checkboxState = !this.checkboxState
+         this.changeCurrent(3)
       },
       changeCurrent(newCurrent) {
          this.formState.current = newCurrent
+      },
+      googleRegistration() {
+         addUserToFirebaseByGoogle()
       }
    }
 }

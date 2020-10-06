@@ -39,7 +39,6 @@ var passwordValidator = function passwordValidator(password) {
 
   Object.entries(state).forEach(function (value) {
     state.state = state.state && value[1];
-    console.log(state);
   });
   return state;
 };

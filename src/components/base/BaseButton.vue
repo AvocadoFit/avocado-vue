@@ -1,5 +1,5 @@
 <template>
-   <button :disabled="isDisabled" :style="style" :class="{ active: active }">
+   <button :disabled="isDisabled" :style="style">
       <slot></slot>
    </button>
 </template>
@@ -33,21 +33,19 @@ export default {
          default: false
       }
    },
-   data() {
-      let shadowColor = `0 0 20px ${this.color}70`
-      return {
-         style: {
-            height: this.height + '%',
-            width: this.width + '%',
-            'background-color': this.active ? this.color : '#D7D7D7',
-            'border-radius': this.radius + 'px',
-            'box-shadow': this.active && this.shadow ? shadowColor : ''
-         }
-      }
-   },
    computed: {
       isDisabled() {
          return !this.active
+      },
+      style() {
+         let shadowColor = `0 0 20px ${this.color}70`
+         return {
+            height: this.height + '%',
+            width: this.width + '%',
+            'border-radius': this.radius + 'px',
+            'background-color': this.active ? this.color : '#D7D7D7',
+            'box-shadow': this.active && this.shadow ? shadowColor : ''
+         }
       }
    }
 }
