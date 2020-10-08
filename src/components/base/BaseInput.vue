@@ -52,8 +52,9 @@ export default {
       return {
          // Style data
          dimension: {
-            width: this.width + 'vw',
-            height: this.height + 'vh'
+            width: `${this.width}vw`,
+            height: `${this.height}px`,
+            'min-height': `${this.height}px`
          },
          textColorStyle: {
             color: this.textColor

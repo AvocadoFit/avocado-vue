@@ -40,9 +40,9 @@ export default {
       style() {
          let shadowColor = `0 0 20px ${this.color}70`
          return {
-            height: this.height + '%',
-            width: this.width + '%',
-            'border-radius': this.radius + 'px',
+            width: `${this.width}%`,
+            height: `${this.height}px`,
+            'border-radius': `${this.radius}px`,
             'background-color': this.active ? this.color : '#D7D7D7',
             'box-shadow': this.active && this.shadow ? shadowColor : ''
          }

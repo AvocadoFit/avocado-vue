@@ -19,7 +19,7 @@
             <div class="reg-form">
                <BaseInput
                   width="23"
-                  height="6.5"
+                  height="60"
                   placeholder="email"
                   @input="validateEmail"
                   :state="emailState"
@@ -32,7 +32,7 @@
                <div class="password-form">
                   <BaseInput
                      width="23"
-                     height="6.5"
+                     height="60"
                      placeholder="password"
                      @input="validatePassword"
                      :state="passwordState.state"
@@ -89,7 +89,7 @@
                   </div>
                   <BaseInput
                      width="23"
-                     height="7"
+                     height="60"
                      placeholder="repeat password"
                      @input="doesPasswordMatch"
                      :state="passwordMatchState"
@@ -253,6 +253,7 @@ export default {
    height: 100vh
    background-color: map-get($colors, 'primary')
 .right
+   position: relative
    width: 40%
    height: calc(100% - 3vw)
    margin: 1.5vw
@@ -343,6 +344,11 @@ export default {
    & .reg-form[class="reg-form active"]
       color: #454545
 .buttons
+   position: absolute
+   bottom: 10vh
+   left: 0
+   padding: inherit
+   box-sizing: border-box
    height: 10%
    width: 100%
    display: flex
