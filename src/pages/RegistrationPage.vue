@@ -101,11 +101,11 @@
                   />
                </div>
                <div class="flex policy" :class="{ active: inputActive == 3 }">
-                  <input
-                     type="checkbox"
-                     name="policy"
+                  <BaseCheckbox
+                     side="20"
                      :disabled="isCheckboxDisabled"
-                     @click="changeActive(3)"
+                     :checked="checkboxState"
+                     @clicked="changeActive(3)"
                   />
                   <p>
                      Creating an account means you’re okay with our Terms of Service, Privacy
@@ -138,7 +138,7 @@
                </BaseCircleButton>
             </div>
          </div>
-         <p v-if="error">
+         <p v-if="error" class="error">
             {{ this.error }}
          </p>
       </div>
@@ -156,6 +156,7 @@ import GoogleIcon from '@/assets/icons/GoogleIcon.vue'
 import { emailValidator, passwordValidator } from '@/utils.js'
 import { defaultPasswordState } from '@/utils.js'
 import { addUserToFirebaseByMail, addUserToFirebaseByGoogle } from '@/db/auth/auth.js'
+import BaseCheckbox from '@/components/base/BaseCheckbox.vue'
 
 export default {
    name: 'RegistrationPage',
@@ -166,7 +167,8 @@ export default {
       BaseCircleButton,
       BaseIcon,
       // FacebookIcon,
-      GoogleIcon
+      GoogleIcon,
+      BaseCheckbox
    },
    data() {
       return {
@@ -236,7 +238,7 @@ export default {
       async baseRegistration() {
          this.error = null
          var esit = await addUserToFirebaseByMail(this.credentials)
-         if (esit) this.error = esit.message
+         if (esit) this.error = `❗️ ${esit.message}`
       },
       googleRegistration() {
          addUserToFirebaseByGoogle()
@@ -336,6 +338,7 @@ export default {
          justify-content: space-between
          & input
             margin: .2vh 0 0 .6vw
+            border: solid 2px red
          & p
             margin-left: 1vw
             font-size: 17px
@@ -360,4 +363,9 @@ export default {
       align-items: center
 .input[class="container input actived"] > input
    color: tomato !important
+.error
+   position: absolute
+   bottom: 5vh
+   left: 0
+   padding: 0 0 0 5vw
 </style>
